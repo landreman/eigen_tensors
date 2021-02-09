@@ -55,7 +55,7 @@ jobs:
       run: pip install -v .
 
     - name: Try import
-      run: python -c "import eigen_tensors as et; b = et.make_tensor3()"
+      run: python -c "import eigen_tensors as et; print(et.make_tensor3())"
 
     - name: Run python unit tests
       run: python3 -m unittest -v
