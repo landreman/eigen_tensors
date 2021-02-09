@@ -1,12 +1,7 @@
-# Versions >= 3.9 have improved support for MPI: https://cliutils.gitlab.io/modern-cmake/chapters/packages/MPI.html
-# The command add_compile_definitions, used in this file, was new in CMake version 3.12.
 cmake_minimum_required(VERSION 3.12)
 
 # Comment out the next line when speed is needed
 set(CMAKE_BUILD_TYPE Debug)
-#add_definitions(-O2)
-
-#include(cmake/knownHosts.cmake)
 
 project(eigen_tensors LANGUAGES CXX)
 
