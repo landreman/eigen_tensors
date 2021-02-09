@@ -8,7 +8,6 @@
 import os
 import sys
 import subprocess
-from shutil import copyfile, copymode # for doctest unitTests
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 
@@ -37,7 +36,6 @@ class CMakeBuild(build_ext):
         cmake_args = [
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}".format(extdir),
             "-DPYTHON_EXECUTABLE={}".format(sys.executable),
-            "-DEXAMPLE_VERSION_INFO={}".format(self.distribution.get_version()),
             "-DCMAKE_BUILD_TYPE={}".format(cfg),  # not used on MSVC, but no harm
         ]
         build_args = []
@@ -64,16 +62,11 @@ setup(
     author_email="matt.landreman@gmail.com",
     description="Testing arbitrary dimension tensors in Eigen and pybind11",
     long_description=long_description,
-    # tell setuptools to look for any packages under 'src'
-    #packages=find_packages('src'),
-    # tell setuptools that all packages will be under the 'src' directory
-    # and nowhere else
-    #package_dir={'':'src'},
     ext_modules=[CMakeExtension("eigen_tensors")],
     cmdclass={"build_ext": CMakeBuild},
     install_requires=[
         'numpy',
-        'scipy'
+        'pybind11'
     ],
     zip_safe=False,
 )

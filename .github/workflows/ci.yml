@@ -1,0 +1,62 @@
+# This file is based on examples in
+# https://docs.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  CI:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.8]
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    #- name: apt-get any needed packages
+    #  if: "contains(matrix.os, 'ubuntu')"
+    #  run: |
+    #    sudo apt-get update
+    #    sudo apt-get install -y build-essential openmpi-bin libopenmpi-dev git cmake libnetcdf-dev
+
+    #- name: get any needed packages from homebrew
+    #  if: "contains(matrix.os, 'macos')"
+    #  run: |
+    #    brew install netcdf
+    #    brew install open-mpi
+
+    - name: Print versions
+      run: |
+        cmake --version
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: which python after python setup
+      run: python --version
+
+    #- name: Install required python packages
+    #  run: |
+    #    pip install wheel numpy jax jaxlib
+    
+    - name: env after adding python
+      run: env
+
+    - name: Install
+      run: pip install -v .
+
+    - name: Try import
+      run: python -c "import eigen_tensors as et; b = et.make_tensor3()"
+
+    - name: Run python unit tests
+      run: python3 -m unittest -v
+
